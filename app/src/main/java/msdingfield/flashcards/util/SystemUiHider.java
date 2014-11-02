@@ -51,7 +51,12 @@ public abstract class SystemUiHider {
      * the device allows hiding it. In cases where the navigation bar is present
      * but cannot be hidden, show and hide will toggle low profile mode.
      */
-    public static final int FLAG_HIDE_NAVIGATION = FLAG_FULLSCREEN | 0x4;
+    public static final int FLAG_HIDE_NAVIGATION = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+            | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+            | View.SYSTEM_UI_FLAG_IMMERSIVE;
 
     /**
      * The activity associated with this UI hider object.
@@ -92,6 +97,7 @@ public abstract class SystemUiHider {
      *            {@link #FLAG_LAYOUT_IN_SCREEN_OLDER_DEVICES}.
      */
     public static SystemUiHider getInstance(Activity activity, View anchorView, int flags) {
+        int bv = Build.VERSION.SDK_INT;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             return new SystemUiHiderHoneycomb(activity, anchorView, flags);
         } else {
